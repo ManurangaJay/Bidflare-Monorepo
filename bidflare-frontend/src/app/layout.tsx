@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "sonner";
+import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import StoreProvider from "@/redux/StoreProvider";
 import NotificationListener from "@/components/NotificationListener";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Bidflare",
   description: "Bidflare - Online Bidding Platform",
   icons: {
-    icon: "/Logo.png",
+    icon: "/Small_Logo.png",
   },
 };
 
