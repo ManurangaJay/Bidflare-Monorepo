@@ -1,0 +1,72 @@
+# =========================
+# 1. SECRETS & SECURITY (CRITICAL)
+# =========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.p12
+*.jks
+
+# =========================
+# 2. FRONTEND (Node.js & Next.js)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js build output
+.next/
+out/
+
+# Next.js telemetry (optional)
+.vercel/
+
+# =========================
+# 3. BACKEND (Java & Maven)
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Maven wrapper (Keep these! But ignore log files)
+!mvnw
+!mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Eclipse / IntelliJ / VS Code specific project files
+.classpath
+.project
+.settings/
+.factorypath
+.idea/
+*.iml
+.vscode/
+
+# =========================
+# 4. DOCKER & LOCAL DATA
+# =========================
+# Ignore local database data mapping
+postgres_data/
+
+# Ignore user uploads locally
+uploads_data/
+
+# Docker build cache directories (if any)
+.docker/
+
+# =========================
+# 5. OS FILES
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
