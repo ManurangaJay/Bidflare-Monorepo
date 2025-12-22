@@ -4,8 +4,17 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import StoreProvider from "@/redux/StoreProvider";
 import NotificationListener from "@/components/NotificationListener";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Bidflare",
+  description: "Bidflare - Online Bidding Platform",
+  icons: {
+    icon: "/Logo.png",
+  },
+};
 
 export default function RootLayout({
   children,
