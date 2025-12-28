@@ -40,7 +40,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         }
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-    } catch (e) {
+    } catch {
       // Ignore errors from localStorage access
     }
     return defaultTheme;
@@ -54,7 +54,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
     try {
       localStorage.setItem(storageKey, theme);
-    } catch (e) {
+    } catch {
       // Ignore errors from localStorage access
     }
   }, [theme, storageKey]);
