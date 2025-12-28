@@ -31,38 +31,33 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   defaultTheme = "light",
   storageKey = "bidflare-theme",
 }) => {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const storedTheme = localStorage.getItem(storageKey) as Theme;
+        if (storedTheme) {
+          return storedTheme;
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+    } catch (e) {
+      // Ignore errors from localStorage access
+    }
+    return defaultTheme;
+  });
 
   useEffect(() => {
-    // Get theme from localStorage or system preference
-    const storedTheme = localStorage.getItem(storageKey) as Theme;
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
-
-    const initialTheme = storedTheme || systemTheme;
-    setThemeState(initialTheme);
-    setMounted(true);
-  }, [storageKey]);
-
-  // Apply theme to document immediately when theme changes
-  useEffect(() => {
-    document.documentElement.classList.remove("light", "dark");
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
-
-  // Save theme to localStorage when it changes
-  useEffect(() => {
-    if (mounted) {
+    try {
       localStorage.setItem(storageKey, theme);
+    } catch (e) {
+      // Ignore errors from localStorage access
     }
-  }, [theme, storageKey, mounted]);
+  }, [theme, storageKey]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);

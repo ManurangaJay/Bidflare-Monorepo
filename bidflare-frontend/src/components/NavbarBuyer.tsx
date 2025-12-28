@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
@@ -10,6 +11,7 @@ import NotificationDropdown from "./NotificationDropdown";
 
 const NavbarBuyer = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   const buyerLinks = [
     { name: "Home", href: "/buyer" },
@@ -22,7 +24,7 @@ const NavbarBuyer = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    router.push("/");
   };
 
   return (
