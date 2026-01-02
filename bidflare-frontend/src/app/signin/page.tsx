@@ -41,6 +41,8 @@ export default function SignInPage() {
         router.push("/seller");
       } else if (user.role.toLowerCase() === "buyer") {
         router.push("/buyer");
+      } else if (user.role.toLowerCase() === "admin") {
+        router.push("/admin");
       } else {
         router.push("/");
       }

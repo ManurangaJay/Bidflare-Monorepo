@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
         port: "8080",
         pathname: "/images/**",
       },
@@ -14,6 +18,14 @@ const nextConfig: NextConfig = {
         hostname: "bidflare_backend",
         port: "8080",
         pathname: "/images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
     ],
   },
