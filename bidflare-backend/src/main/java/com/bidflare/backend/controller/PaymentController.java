@@ -52,6 +52,11 @@ public class PaymentController {
     @PostConstruct
     public void init() {
         Stripe.apiKey = stripeApiKey;
+        if (webhookSecret == null || webhookSecret.isEmpty()) {
+            logger.error("Stripe Webhook Secret is NOT set!");
+        } else {
+            logger.info("Stripe Webhook Secret loaded (length: {})", webhookSecret.length());
+        }
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'BUYER')")
@@ -127,7 +132,7 @@ public class PaymentController {
             event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
         } catch (SignatureVerificationException e) {
             // Invalid signature
-            logger.warn("Webhook signature verification failed.");
+            logger.warn("Webhook signature verification failed. Header: {}", sigHeader);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Webhook error");
         } catch (Exception e) {
             logger.error("Webhook processing error: {}", e.getMessage());

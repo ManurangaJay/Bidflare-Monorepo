@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,6 +74,7 @@ public class NotificationServiceImpl implements NotificationService {
                     n.setType(event.getType());
                     n.setMessage(event.getMessage());
                     n.setIsRead(false);
+                    n.setCreatedAt(LocalDateTime.now()); // Explicitly set time to avoid null in WebSocket response
                     // n.setReferenceId(event.getReferenceId()); // If you have this column
                     return n;
                 }).toList();
