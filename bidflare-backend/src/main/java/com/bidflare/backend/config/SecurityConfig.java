@@ -58,6 +58,7 @@ public class SecurityConfig {
                                 "/api/payments/webhook",
                                 "/ws/**"
                         ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,6 +1,8 @@
 package com.bidflare.backend.repository;
 
 import com.bidflare.backend.entity.Auction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.ZonedDateTime;
@@ -11,4 +13,5 @@ public interface AuctionRepository extends JpaRepository<Auction, UUID> {
     List<Auction> findByProductId(UUID productId);
     List<Auction> findAllByEndTimeBeforeAndIsClosedFalse(ZonedDateTime endTime);
     List<Auction> findByWinnerId(UUID winnerId);
+    Page<Auction> findByIsClosed(boolean isClosed, Pageable pageable);
 }
