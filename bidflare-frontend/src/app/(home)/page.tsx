@@ -52,8 +52,8 @@ export default function HomePage() {
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mb-8">
           The modern auction platform where rare finds meet eager bidders.
-          Whether you&apos;re selling unique art or discovering hidden treasures,
-          BidFlare is the marketplace for you.
+          Whether you&apos;re selling unique art or discovering hidden
+          treasures, BidFlare is the marketplace for you.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Link href="/register">
@@ -76,8 +76,8 @@ export default function HomePage() {
             Sell Your Masterpieces to the World
           </h2>
           <p className="text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Whether you&apos;re an artist, collector, or entrepreneur, BidFlare gives
-            you the tools to sell one-of-a-kind items — from paintings,
+            Whether you&apos;re an artist, collector, or entrepreneur, BidFlare
+            gives you the tools to sell one-of-a-kind items — from paintings,
             sculptures, and handcrafted jewelry to vintage collectibles and rare
             artifacts.
           </p>

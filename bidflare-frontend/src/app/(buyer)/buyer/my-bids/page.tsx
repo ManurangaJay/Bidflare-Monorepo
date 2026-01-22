@@ -8,6 +8,7 @@ import { Bid } from "../../../../../types";
 import AllBidsTab from "../../../../components/AllBidsTab";
 import WonBidsTab from "../../../../components/WonBidsTab";
 import LostBidsTab from "../../../../components/LostBidsTab";
+import RoleGuard from "@/components/RoleGuard";
 
 type Tab = "all" | "won" | "lost";
 
@@ -113,48 +114,56 @@ export default function MyBidsPage() {
   );
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-orange-primary mb-6">My Bids</h1>
+    <RoleGuard allowedRoles={["BUYER"]}>
+      <div className="min-h-screen p-4 md:p-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold text-orange-primary mb-6">
+            My Bids
+          </h1>
 
-        {loading ? (
-          <div className="text-center py-10 text-orange-primary">
-            Loading bids...
-          </div>
-        ) : (
-          <>
-            {/* Tab Navigation */}
-            <div className="border-b border-border mb-6">
-              <nav className="flex space-x-2" aria-label="Tabs">
-                <TabButton tabName="all" label="All Bids" count={bids.length} />
-                <TabButton
-                  tabName="won"
-                  label="Bids Won"
-                  count={wonBids.length}
-                />
-                <TabButton
-                  tabName="lost"
-                  label="Lost Bids"
-                  count={lostBids.length}
-                />
-              </nav>
+          {loading ? (
+            <div className="text-center py-10 text-orange-primary">
+              Loading bids...
             </div>
+          ) : (
+            <>
+              {/* Tab Navigation */}
+              <div className="border-b border-border mb-6">
+                <nav className="flex space-x-2" aria-label="Tabs">
+                  <TabButton
+                    tabName="all"
+                    label="All Bids"
+                    count={bids.length}
+                  />
+                  <TabButton
+                    tabName="won"
+                    label="Bids Won"
+                    count={wonBids.length}
+                  />
+                  <TabButton
+                    tabName="lost"
+                    label="Lost Bids"
+                    count={lostBids.length}
+                  />
+                </nav>
+              </div>
 
-            {/* Tab Content */}
-            <div className="mt-4">
-              {activeTab === "all" && (
-                <AllBidsTab bids={bids} userId={userId} />
-              )}
-              {activeTab === "won" && (
-                <WonBidsTab bids={wonBids} userId={userId} />
-              )}
-              {activeTab === "lost" && (
-                <LostBidsTab bids={lostBids} userId={userId} />
-              )}
-            </div>
-          </>
-        )}
+              {/* Tab Content */}
+              <div className="mt-4">
+                {activeTab === "all" && (
+                  <AllBidsTab bids={bids} userId={userId} />
+                )}
+                {activeTab === "won" && (
+                  <WonBidsTab bids={wonBids} userId={userId} />
+                )}
+                {activeTab === "lost" && (
+                  <LostBidsTab bids={lostBids} userId={userId} />
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </RoleGuard>
   );
 }

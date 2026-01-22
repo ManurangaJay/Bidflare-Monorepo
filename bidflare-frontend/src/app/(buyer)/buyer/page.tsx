@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch } from "../../../../lib/authFetch";
 import AuctionCard from "@/components/AuctionCard";
+import RoleGuard from "@/components/RoleGuard";
 
 type Auction = {
   id: string;
@@ -88,46 +89,50 @@ export default function BuyerHomepage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <section className="text-center py-16">
-        <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-          Discover Exclusive Auctions on{" "}
-          <span className="text-orange-500">BidFlare</span>
-        </h1>
-        <p className="text-lg text-muted-foreground mb-6">
-          Bid smart. Win big. Explore high-demand items in real time.
-        </p>
-        <button
-          onClick={handleStartBidding}
-          className="bg-orange-600 text-primary-foreground px-6 py-3 rounded-xl shadow hover:bg-orange-accent transition-colors text-white"
-        >
-          Start Bidding
-        </button>
-      </section>
+    <RoleGuard allowedRoles={["BUYER"]}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="text-center py-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+            Discover Exclusive Auctions on{" "}
+            <span className="text-orange-500">BidFlare</span>
+          </h1>
+          <p className="text-lg text-muted-foreground mb-6">
+            Bid smart. Win big. Explore high-demand items in real time.
+          </p>
+          <button
+            onClick={handleStartBidding}
+            className="bg-orange-600 text-primary-foreground px-6 py-3 rounded-xl shadow hover:bg-orange-accent transition-colors text-white"
+          >
+            Start Bidding
+          </button>
+        </section>
 
-      <section className="py-10">
-        <h2 className="text-2xl font-semibold text-foreground mb-6">
-          🔥 Ending Soon
-        </h2>
-        {loading && <p className="text-muted-foreground">Loading...</p>}
-        {error && <p className="text-destructive">Error: {error}</p>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {auctions
-            .filter((a) => {
-              const now = new Date();
-              return new Date(a.startTime) <= now && new Date(a.endTime) > now;
-            })
-            .slice(0, 8)
-            .map((auction) => (
-              <AuctionCard
-                key={auction.id}
-                {...auction}
-                image={auction.image || "/images/default.jpg"}
-                onClick={() => router.push(`/buyer/auctions/${auction.id}`)}
-              />
-            ))}
-        </div>
-      </section>
-    </div>
+        <section className="py-10">
+          <h2 className="text-2xl font-semibold text-foreground mb-6">
+            🔥 Ending Soon
+          </h2>
+          {loading && <p className="text-muted-foreground">Loading...</p>}
+          {error && <p className="text-destructive">Error: {error}</p>}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {auctions
+              .filter((a) => {
+                const now = new Date();
+                return (
+                  new Date(a.startTime) <= now && new Date(a.endTime) > now
+                );
+              })
+              .slice(0, 8)
+              .map((auction) => (
+                <AuctionCard
+                  key={auction.id}
+                  {...auction}
+                  image={auction.image || "/images/default.jpg"}
+                  onClick={() => router.push(`/buyer/auctions/${auction.id}`)}
+                />
+              ))}
+          </div>
+        </section>
+      </div>
+    </RoleGuard>
   );
 }

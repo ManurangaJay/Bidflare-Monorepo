@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { authFetch } from "../../../../../lib/authFetch";
 import AuctionCard from "@/components/AuctionCard";
 import { useRouter } from "next/navigation";
+import RoleGuard from "@/components/RoleGuard";
 
 type Auction = {
   id: string;
@@ -66,9 +67,7 @@ export default function AuctionsPage() {
                         : `${
                             process.env.NEXT_PUBLIC_API_URL ||
                             "http://localhost:8080"
-                          }${
-                            imageUrl.startsWith("/") ? "" : "/"
-                          }${imageUrl}`;
+                          }${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
                     }
                   }
                 } catch {
@@ -115,70 +114,74 @@ export default function AuctionsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold text-orange-primary mb-6 text-center">
-        🔥 Live & Upcoming Auctions
-      </h1>
-      <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto">
-        Browse all auctions currently open for bidding or starting soon. Don&apos;t
-        miss your chance!
-      </p>
+    <RoleGuard allowedRoles={["BUYER"]}>
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        <h1 className="text-4xl font-bold text-orange-primary mb-6 text-center">
+          🔥 Live & Upcoming Auctions
+        </h1>
+        <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto">
+          Browse all auctions currently open for bidding or starting soon.
+          Don&apos;t miss your chance!
+        </p>
 
-      {loading && (
-        <p className="text-muted-foreground text-center">Loading...</p>
-      )}
-      {error && <p className="text-destructive text-center">Error: {error}</p>}
+        {loading && (
+          <p className="text-muted-foreground text-center">Loading...</p>
+        )}
+        {error && (
+          <p className="text-destructive text-center">Error: {error}</p>
+        )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {currentAuctions.map((auction) => (
-          <AuctionCard
-            key={auction.id}
-            id={auction.id}
-            title={auction.title}
-            description={auction.description}
-            image={auction.image}
-            startingPrice={auction.startingPrice}
-            startTime={auction.startTime}
-            endTime={auction.endTime}
-            isClosed={auction.isClosed}
-            onClick={() => router.push(`/buyer/auctions/${auction.id}`)}
-          />
-        ))}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center mt-10 space-x-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 rounded-xl border border-border text-muted-foreground hover:bg-orange-secondary/50 disabled:opacity-50"
-          >
-            Prev
-          </button>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`px-3 py-1 rounded-xl border ${
-                page === currentPage
-                  ? "bg-orange-primary text-primary-foreground border-orange-primary"
-                  : "border-border text-muted-foreground hover:bg-orange-secondary/50"
-              }`}
-            >
-              {page}
-            </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {currentAuctions.map((auction) => (
+            <AuctionCard
+              key={auction.id}
+              id={auction.id}
+              title={auction.title}
+              description={auction.description}
+              image={auction.image}
+              startingPrice={auction.startingPrice}
+              startTime={auction.startTime}
+              endTime={auction.endTime}
+              isClosed={auction.isClosed}
+              onClick={() => router.push(`/buyer/auctions/${auction.id}`)}
+            />
           ))}
-
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded-xl border border-border text-muted-foreground hover:bg-orange-secondary/50 disabled:opacity-50"
-          >
-            Next
-          </button>
         </div>
-      )}
-    </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-10 space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded-xl border border-border text-muted-foreground hover:bg-orange-secondary/50 disabled:opacity-50"
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-1 rounded-xl border ${
+                  page === currentPage
+                    ? "bg-orange-primary text-primary-foreground border-orange-primary"
+                    : "border-border text-muted-foreground hover:bg-orange-secondary/50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded-xl border border-border text-muted-foreground hover:bg-orange-secondary/50 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </RoleGuard>
   );
 }
